@@ -124,8 +124,10 @@ def isBoardFull(board):
 
 def game():
 
-    print('Welcome to Tic Tac Toe!')
-
+    #print('Welcome to Tic Tac Toe!')
+    reply_text = "Welcome to Tic Tac Toe!"
+     message = TextSendMessage(reply_text)
+    line_bot_api.reply_message(event.reply_token, message)
     while True:
 
         theBoard = [' '] * 10
@@ -220,9 +222,12 @@ def handle_message(event):
     elif(text=="機器人"):
         reply_text = "有！我是game機器人"
     elif(text=="game"):
+        game()
         #reply_text = "game"
-        #print("Welcome to Tic Tac Toe!",reply_text)
-        line_bot_api.reply_message(event.reply_token, TextSendMessage("Welcome to Tic Tac Toe!"))
+        #reply_text = "Welcome to Tic Tac Toe!"
+        #message = TextSendMessage(reply_text)
+        #line_bot_api.reply_message(event.reply_token, message)
+        #   
         #message = TextSendMessage(reply_text)
         #line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
 
