@@ -169,8 +169,7 @@ def handle_message(event):
         reply_text = "ooxx game"
     elif(text=="介紹"):    reply_text = openF1
     
-        else:  # 如果非以上的選項，就會學你說話
-        print(">>>>>>>>>> 出題1: text = ",text)
+
 
     message = TextSendMessage(reply_text)
     line_bot_api.reply_message(event.reply_token, message)
