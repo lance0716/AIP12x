@@ -6,40 +6,6 @@ from flask import Flask, request, abort
 from linebot import ( LineBotApi, WebhookHandler )
 from linebot.exceptions import( InvalidSignatureError )
 from linebot.models import *
-
-###=== (5.2) 程式宣告 ===###  
-app = Flask(__name__)  # __name__ 代表目前執行的模組
-
-
-###=== (5.3) LINE介面密碼 ===### (參考3.3)
-##== (1) Channel Access Token
-line_bot_api = LineBotApi("zX5wosMZDhR00JwpEwCtKCrOGZc/y90rFLsJFv9qhwNEvR29DtFmWUlLzVSDHIeYc09TJ3AIh7XwmV9eduCViUAIgWAC9NMEFWvxU/nlFUg1jPjKLbEAH5p/gNHTBKJIjuZKbf5m5HgVw4rFkSu9vwdB04t89/1O/w1cDnyilFU=")  #-- YOUR_CHANNEL_ACCESS_TOKEN
-##== (2) Channel Secret
-handler = WebhookHandler("d744d023067e2c4d4717a61d8081ac18")  #-- YOUR_CHANNEL_SECRET
-
-
-###=== (5.5) 處理訊息  ===###
-@handler.add(MessageEvent, message=TextMessage)
-def handle_message(event):
-    print(event)
-    if event.message.id == "100001":
-        return
-    text = event.message.text
-    if (text=="Hi"):
-        reply_text = "Hello"
-        #Your user ID
-    elif(text=="你好"): 
-        reply_text = "你好啊..."
-    elif(text=="機器人"):
-        reply_text = "有！我是GAME機器人！"
-    else:  # 如果非以上的選項，就會學你說話
-        reply_text = text
-    message = TextSendMessage(reply_text)
-    line_bot_api.reply_message(event.reply_token, message)
-
-###=== (5.6) 執行程式  ===###
-import random
-
 def drawBoard(board):
 
     print(board[7] + '|' + board[8] + '|' + board[9])
@@ -153,7 +119,38 @@ def isBoardFull(board):
             return False
     return True
 
+###=== (5.2) 程式宣告 ===###  
+app = Flask(__name__)  # __name__ 代表目前執行的模組
 
+
+###=== (5.3) LINE介面密碼 ===### (參考3.3)
+##== (1) Channel Access Token
+line_bot_api = LineBotApi("zX5wosMZDhR00JwpEwCtKCrOGZc/y90rFLsJFv9qhwNEvR29DtFmWUlLzVSDHIeYc09TJ3AIh7XwmV9eduCViUAIgWAC9NMEFWvxU/nlFUg1jPjKLbEAH5p/gNHTBKJIjuZKbf5m5HgVw4rFkSu9vwdB04t89/1O/w1cDnyilFU=")  #-- YOUR_CHANNEL_ACCESS_TOKEN
+##== (2) Channel Secret
+handler = WebhookHandler("d744d023067e2c4d4717a61d8081ac18")  #-- YOUR_CHANNEL_SECRET
+
+
+###=== (5.5) 處理訊息  ===###
+@handler.add(MessageEvent, message=TextMessage)
+def handle_message(event):
+    print(event)
+    if event.message.id == "100001":
+        return
+    text = event.message.text
+    if (text=="Hi"):
+        reply_text = "Hello"
+        #Your user ID
+    elif(text=="你好"): 
+        reply_text = "你好啊..."
+    elif(text=="機器人"):
+        reply_text = "有！我是GAME機器人！"
+    else:  # 如果非以上的選項，就會學你說話
+        reply_text = text
+    message = TextSendMessage(reply_text)
+    line_bot_api.reply_message(event.reply_token, message)
+
+###=== (5.6) 執行程式  ===###
+import random
 print('Welcome to Tic Tac Toe!')
 
 while True:
