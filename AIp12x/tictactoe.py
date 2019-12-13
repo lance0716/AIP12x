@@ -122,56 +122,56 @@ def isBoardFull(board):
     return True
 
 def game():
-import random
-print('Welcome to Tic Tac Toe!')
+    import random
+    print('Welcome to Tic Tac Toe!')
 
-while True:
+    while True:
 
-    theBoard = [' '] * 10
-    playerLetter, computerLetter = inputPlayerLetter()
-    turn = whoGoesFirst()
-    print('The ' + turn + ' will go first.')
-    gameIsPlaying = True
+        theBoard = [' '] * 10
+        playerLetter, computerLetter = inputPlayerLetter()
+        turn = whoGoesFirst()
+        print('The ' + turn + ' will go first.')
+        gameIsPlaying = True
 
-    while gameIsPlaying:
-        if turn == 'player':
-            
-            drawBoard(theBoard)
-            move = getPlayerMove(theBoard)
-            makeMove(theBoard, playerLetter, move)
-
-            if isWinner(theBoard, playerLetter):
+        while gameIsPlaying:
+            if turn == 'player':
+                
                 drawBoard(theBoard)
-                print('You have won the game!')
-                gameIsPlaying = False
-            else:
-                if isBoardFull(theBoard):
+                move = getPlayerMove(theBoard)
+                makeMove(theBoard, playerLetter, move)
+
+                if isWinner(theBoard, playerLetter):
                     drawBoard(theBoard)
-                    print('The game is a tie!')
-                    break
+                    print('You have won the game!')
+                    gameIsPlaying = False
                 else:
-                    turn = 'computer'
+                    if isBoardFull(theBoard):
+                        drawBoard(theBoard)
+                        print('The game is a tie!')
+                        break
+                    else:
+                        turn = 'computer'
 
-        else:
-            
-            move = getComputerMove(theBoard, computerLetter)
-            makeMove(theBoard, computerLetter, move)
-
-            if isWinner(theBoard, computerLetter):
-                drawBoard(theBoard)
-                print('You have lose the game!')
-                gameIsPlaying = False
             else:
-                if isBoardFull(theBoard):
-                    drawBoard(theBoard)
-                    print('The game is a tie!')
-                    break
-                else:
-                    turn = 'player'
+                
+                move = getComputerMove(theBoard, computerLetter)
+                makeMove(theBoard, computerLetter, move)
 
-    print('Do you want to play again? (yes or no)')
-    if not input().lower().startswith('y'):
-        break
+                if isWinner(theBoard, computerLetter):
+                    drawBoard(theBoard)
+                    print('You have lose the game!')
+                    gameIsPlaying = False
+                else:
+                    if isBoardFull(theBoard):
+                        drawBoard(theBoard)
+                        print('The game is a tie!')
+                        break
+                    else:
+                        turn = 'player'
+
+        print('Do you want to play again? (yes or no)')
+        if not input().lower().startswith('y'):
+            break
 
 
 ###=== (5.2) 設定對話(kk,openF,answerF) ===###
@@ -221,7 +221,7 @@ def handle_message(event):
     elif(text=="介紹"):    reply_text = openF1
     elif(text=="game"):    
         game()
-        
+
 ###=== (5.6) 執行程式  ===###
 import os
 if __name__ == "__main__":
