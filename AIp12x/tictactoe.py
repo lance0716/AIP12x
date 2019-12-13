@@ -8,6 +8,7 @@ from flask import Flask, request, abort
 from flask import url_for, redirect, render_template, Markup
 import numpy as np
 import pandas as pd
+import random
 def drawBoard(board):
 
     print(board[7] + '|' + board[8] + '|' + board[9])
@@ -216,11 +217,10 @@ def handle_message(event):
     if (text=="Hi"):      reply_text = "Hello"
     elif(text=="機器人"):  reply_text = "有！我是game機器人"
     elif(text=="你好"):    reply_text = "你好啊..."
-    elif(text.upper()=="H"):    
+    elif(text.upper()=="H"):
         reply_text = "ooxx game"
     elif(text=="介紹"):    reply_text = openF1
-    elif(text=="game"):    
-        import random
+    elif(text=="game"):
         print('Welcome to Tic Tac Toe!')
     else:
         reply_text = text
