@@ -1,20 +1,13 @@
 
-###=== (5.1) 載入軟件包 與自製函數(initialY,computeAB,updateY,centerY,judgeX) ===###  
+
+
+###=== (5.1) 載入軟件包 ===###  
+from flask import Flask, request, abort
 from linebot import ( LineBotApi, WebhookHandler )
 from linebot.exceptions import( InvalidSignatureError )
-from linebot.models import *    
-from flask import Flask, request, abort 
-#---------- 下述是加入 ABgame
-from flask import url_for, redirect, render_template, Markup
-import numpy as np
-import pandas as pd
-import random
+from linebot.models import *
 
-
-###=== (5.2) 設定對話(kk,openF,answerF) ===###
-Xactual = np.array([1,2,3,4])   
-openF1 = "ooxx game" 
-openF2 = "ooxx game"                              #-- openF: 會話啟始(opening)
+###=== (5.2) 程式宣告 ===###  
 app = Flask(__name__)  # __name__ 代表目前執行的模組
 
 ###=== (5.3) LINE介面密碼 ===### (參考3.3)
@@ -44,21 +37,21 @@ def callback():
 ###=== (5.5) 處理訊息  ===###
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    global Xactual
     print(event)
     if event.message.id == "100001":
         return
     text = event.message.text
-    print(">>>>>>>>>> TEXT = "+text)
-    if (text=="Hi"):      reply_text = "Hello"
-    elif(text=="機器人"):  reply_text = "有！我是game機器人"
-    elif(text=="你好"):    reply_text = "你好啊..."
-    elif(text.upper()=="H"):
-        reply_text = "ooxx game"
-    elif(text=="介紹"):    reply_text = openF1
-    elif(text=="game"):
-        print("game")
-
+    if (text=="Hi"):
+        reply_text = "Hello"
+        #Your user ID
+    elif(text=="你好"): 
+        reply_text = "你好啊..."
+    elif(text=="機器人"):
+        reply_text = "有！我是game機器人"
+    else:  # 如果非以上的選項，就會學你說話
+        reply_text = text
+    message = TextSendMessage(reply_text)
+    line_bot_api.reply_message(event.reply_token, message)
 
 ###=== (5.6) 執行程式  ===###
 import os
