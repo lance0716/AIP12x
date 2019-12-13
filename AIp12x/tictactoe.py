@@ -21,7 +21,10 @@ def inputPlayerLetter():
 
     letter = ''
     while not (letter == 'O' or letter == 'X'):
-        print('Do you want to be O or X?')
+        #print('Do you want to be O or X?')
+        reply_text = "Do you want to be O or X?"
+        message = TextSendMessage(reply_text)
+        line_bot_api.reply_message(event.reply_token, message)
         letter = input().upper()
 
     if letter == 'X':
@@ -127,6 +130,7 @@ def game():
     reply_text = "Welcome to Tic Tac Toe!"
     message = TextSendMessage(reply_text)
     line_bot_api.reply_message(event.reply_token, message)
+
     while True:
 
         theBoard = [' '] * 10
@@ -244,6 +248,7 @@ def handle_message(event):
         reply_text = "Welcome to Tic Tac Toe!"
         message = TextSendMessage(reply_text)
         line_bot_api.reply_message(event.reply_token, message)
+
         while True:
 
             theBoard = [' '] * 10
