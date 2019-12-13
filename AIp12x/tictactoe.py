@@ -123,7 +123,7 @@ def isBoardFull(board):
     return True
 
 def game():
-    import random
+
     print('Welcome to Tic Tac Toe!')
 
     while True:
@@ -220,7 +220,61 @@ def handle_message(event):
     elif(text=="機器人"):
         reply_text = "有！我是game機器人"
     elif(text=="game"):
-        reply_text = "game"
+        #reply_text = "game"
+        print('Welcome to Tic Tac Toe!',t)
+
+            while True:
+                theBoard = [' '] * 10
+                playerLetter, computerLetter = inputPlayerLetter()
+                turn = whoGoesFirst()
+                print('The ' + turn + ' will go first.',t)
+                gameIsPlaying = True
+
+                while gameIsPlaying:
+                    if turn == 'player':
+                        
+                        drawBoard(theBoard)
+                        move = getPlayerMove(theBoard)
+                        makeMove(theBoard, playerLetter, move)
+
+                        if isWinner(theBoard, playerLetter):
+                            drawBoard(theBoard)
+                            print('You have won the game!',t)
+                            gameIsPlaying = False
+                        else:
+                            if isBoardFull(theBoard):
+                                drawBoard(theBoard)
+                                print('The game is a tie!',t)
+                                break
+                            else:
+                                turn = 'computer'
+
+                    else:
+                        
+                        move = getComputerMove(theBoard, computerLetter)
+                        makeMove(theBoard, computerLetter, move)
+
+                        if isWinner(theBoard, computerLetter):
+                            drawBoard(theBoard)
+                            print('You have lose the game!',t)
+                            gameIsPlaying = False
+                        else:
+                            if isBoardFull(theBoard):
+                                drawBoard(theBoard)
+                                print('The game is a tie!',t)
+                                break
+                            else:
+                                turn = 'player'
+
+                print('Do you want to play again? (yes or no)',t)
+                if not input().lower().startswith('y'):
+                    break
+            reply_text = t
+            message = TextSendMessage(reply_text)
+            line_bot_api.reply_message(event.reply_token, message)
+
+
+
     else:  # 如果非以上的選項，就會學你說話
         reply_text = text
     message = TextSendMessage(reply_text)
