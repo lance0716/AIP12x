@@ -222,8 +222,7 @@ def handle_message(event):
     elif(text=="介紹"):    reply_text = openF1
     elif(text=="game"):
         print('Welcome to Tic Tac Toe!')
-    else:
-        reply_text = text
+
 
 ###=== (5.6) 執行程式  ===###
 import os
