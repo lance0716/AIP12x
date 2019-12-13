@@ -222,54 +222,6 @@ def handle_message(event):
     elif(text=="game"):    
         import random
         print('Welcome to Tic Tac Toe!')
-
-        while True:
-
-            theBoard = [' '] * 10
-            playerLetter, computerLetter = inputPlayerLetter()
-            turn = whoGoesFirst()
-            print('The ' + turn + ' will go first.')
-            gameIsPlaying = True
-
-            while gameIsPlaying:
-                if turn == 'player':
-                    
-                    drawBoard(theBoard)
-                    move = getPlayerMove(theBoard)
-                    makeMove(theBoard, playerLetter, move)
-
-                    if isWinner(theBoard, playerLetter):
-                        drawBoard(theBoard)
-                        print('You have won the game!')
-                        gameIsPlaying = False
-                    else:
-                        if isBoardFull(theBoard):
-                            drawBoard(theBoard)
-                            print('The game is a tie!')
-                            break
-                        else:
-                            turn = 'computer'
-
-                else:
-                    
-                    move = getComputerMove(theBoard, computerLetter)
-                    makeMove(theBoard, computerLetter, move)
-
-                    if isWinner(theBoard, computerLetter):
-                        drawBoard(theBoard)
-                        print('You have lose the game!')
-                        gameIsPlaying = False
-                    else:
-                        if isBoardFull(theBoard):
-                            drawBoard(theBoard)
-                            print('The game is a tie!')
-                            break
-                        else:
-                            turn = 'player'
-
-            print('Do you want to play again? (yes or no)')
-            if not input().lower().startswith('y'):
-                break
     else:
         reply_text = text
 
