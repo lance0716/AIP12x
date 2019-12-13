@@ -221,13 +221,14 @@ def handle_message(event):
         reply_text = "有！我是game機器人"
     elif(text=="game"):
         #reply_text = "game"
-        print('Welcome to Tic Tac Toe!',t)
+        print("Welcome to Tic Tac Toe!",t)
 
             while True:
+
                 theBoard = [' '] * 10
                 playerLetter, computerLetter = inputPlayerLetter()
                 turn = whoGoesFirst()
-                print('The ' + turn + ' will go first.',t)
+                print("The " + turn + " will go first.",t)
                 gameIsPlaying = True
 
                 while gameIsPlaying:
@@ -269,9 +270,9 @@ def handle_message(event):
                 print('Do you want to play again? (yes or no)',t)
                 if not input().lower().startswith('y'):
                     break
-            reply_text = t
-            message = TextSendMessage(reply_text)
-            line_bot_api.reply_message(event.reply_token, message)
+        reply_text = t
+        message = TextSendMessage(reply_text)
+        line_bot_api.reply_message(event.reply_token, message)
 
 
 
