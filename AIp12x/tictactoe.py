@@ -250,7 +250,7 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
 
         while True:
-            reply_text = "".join(["while",text])
+            text = "".join(["while",text])
             #line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
 
             theBoard = [' '] * 10
