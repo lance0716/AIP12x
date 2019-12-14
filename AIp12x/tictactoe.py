@@ -249,11 +249,12 @@ def handle_message(event):
         #text = "Welcome to Tic Tac Toe!"
         print("Welcome to Tic Tac Toe!",text)
         #reply_text = "".join(["while",text])
-        reply_text = "".join([text, "。 跟你說，現在的 X=."]) 
+        #reply_text = "".join([text, "。 跟你說，現在的 X=."]) 
 
         #line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
 
-        #while True:
+        while True:
+            reply_text = "".join([text, "。 跟你說，現在的 X=."]) 
             #reply_text = "".join(["while",text])
             #line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
 
