@@ -249,65 +249,65 @@ def handle_message(event):
         message = TextSendMessage(reply_text)
         line_bot_api.reply_message(event.reply_token, message)
 
-        if '1' = '1':
-            reply_text = "while"
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
-            theBoard = [' '] * 10
-            playerLetter, computerLetter = inputPlayerLetter()
-            turn = whoGoesFirst()
-            #print('The ' + turn + ' will go first.')
-            reply_text = "The " + turn + " will go first.!"
-            message = TextSendMessage(reply_text)
-            line_bot_api.reply_message(event.reply_token, message)
-            gameIsPlaying = True
 
-            while gameIsPlaying:
-                if turn == 'player':
+        reply_text = "while"
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+        theBoard = [' '] * 10
+        playerLetter, computerLetter = inputPlayerLetter()
+        turn = whoGoesFirst()
+        #print('The ' + turn + ' will go first.')
+        reply_text = "The " + turn + " will go first.!"
+        message = TextSendMessage(reply_text)
+        line_bot_api.reply_message(event.reply_token, message)
+        gameIsPlaying = True
+
+        while gameIsPlaying:
+            if turn == 'player':
                     
+                drawBoard(theBoard)
+                move = getPlayerMove(theBoard)
+                makeMove(theBoard, playerLetter, move)
+
+                if isWinner(theBoard, playerLetter):
                     drawBoard(theBoard)
-                    move = getPlayerMove(theBoard)
-                    makeMove(theBoard, playerLetter, move)
-
-                    if isWinner(theBoard, playerLetter):
-                        drawBoard(theBoard)
-                        #print('You have won the game!')
-                        reply_text = "You have won the game!"
-                        message = TextSendMessage(reply_text)
-                        line_bot_api.reply_message(event.reply_token, message)
-                        gameIsPlaying = False
-                    else:
-                        if isBoardFull(theBoard):
-                            drawBoard(theBoard)
-                            #print('The game is a tie!')
-                            reply_text = "The game is a tie!"
-                            message = TextSendMessage(reply_text)
-                            line_bot_api.reply_message(event.reply_token, message)
-                            break
-                        else:
-                            turn = 'computer'
-
+                    #print('You have won the game!')
+                    reply_text = "You have won the game!"
+                    message = TextSendMessage(reply_text)
+                    line_bot_api.reply_message(event.reply_token, message)
+                    gameIsPlaying = False
                 else:
-                    
-                    move = getComputerMove(theBoard, computerLetter)
-                    makeMove(theBoard, computerLetter, move)
-
-                    if isWinner(theBoard, computerLetter):
+                    if isBoardFull(theBoard):
                         drawBoard(theBoard)
-                        #print('You have lose the game!')
-                        reply_text = "You have lose the game!"
+                        #print('The game is a tie!')
+                        reply_text = "The game is a tie!"
                         message = TextSendMessage(reply_text)
                         line_bot_api.reply_message(event.reply_token, message)
-                        gameIsPlaying = False
+                        break
                     else:
-                        if isBoardFull(theBoard):
-                            drawBoard(theBoard)
-                            #print('The game is a tie!')
-                            reply_text = "The game is a tie!"
-                            message = TextSendMessage(reply_text)
-                            line_bot_api.reply_message(event.reply_token, message)
-                            break
-                        else:
-                            turn = 'player'
+                       turn = 'computer'
+
+            else:
+                
+                move = getComputerMove(theBoard, computerLetter)
+                makeMove(theBoard, computerLetter, move)
+
+                if isWinner(theBoard, computerLetter):
+                    drawBoard(theBoard)
+                    #print('You have lose the game!')
+                    reply_text = "You have lose the game!"
+                    message = TextSendMessage(reply_text)
+                    line_bot_api.reply_message(event.reply_token, message)
+                    gameIsPlaying = False
+                else:
+                    if isBoardFull(theBoard):
+                        drawBoard(theBoard)
+                        #print('The game is a tie!')
+                        reply_text = "The game is a tie!"
+                        message = TextSendMessage(reply_text)
+                        line_bot_api.reply_message(event.reply_token, message)
+                        break
+                    else:
+                        turn = 'player'
 
             # print('Do you want to play again? (yes or no)')
             reply_text = "Do you want to play again? (yes or no)!"
