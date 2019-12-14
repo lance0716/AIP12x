@@ -246,7 +246,8 @@ def handle_message(event):
         reply_text = "有！我是game機器人"
     elif(text=="game"):
         #game()
-        text = "Welcome to Tic Tac Toe!"
+        #text = "Welcome to Tic Tac Toe!"
+        print("Welcome to Tic Tac Toe!",text)
         #line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
 
         while True:
