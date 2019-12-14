@@ -251,8 +251,7 @@ def handle_message(event):
 
         while True:
             reply_text = "while"
-            message = TextSendMessage(reply_text)
-            line_bot_api.reply_message(event.reply_token, message)
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
             theBoard = [' '] * 10
             playerLetter, computerLetter = inputPlayerLetter()
             turn = whoGoesFirst()
