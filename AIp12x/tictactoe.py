@@ -247,8 +247,17 @@ def handle_message(event):
     elif(text=="機器人"):
         reply_text = "有！我是game機器人"
     elif(text=="game"):
-        game()
-        #print('Welcome to Tic Tac Toe!')
+        text = "Welcome to Tic Tac Toe!"
+        #line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+        
+        while True:
+            #reply_text = "Welcome to Tic Tac Toe!"
+            reply_text = "".join([text, "while"])
+            theBoard = [' '] * 10
+            playerLetter, computerLetter = inputPlayerLetter()
+            turn = whoGoesFirst()
+            #print('The ' + turn + ' will go first.')
+            #reply_text = "".join([text, "。 跟你說，現在的 X=",Xstr,"你可以試著'解題'看看..."])
 
     else:  # 如果非以上的選項，就會學你說話
         reply_text = text
