@@ -128,78 +128,78 @@ def isBoardFull(board):
 def game():
     @handler.add(MessageEvent, message=TextMessage)
     def handle_message(event):
-    text = event.message.text
-    
-    #print('Welcome to Tic Tac Toe!')
-    reply_text = "Welcome to Tic Tac Toe!"
-    #message = TextSendMessage(reply_text)
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+        text = event.message.text
+        
+        #print('Welcome to Tic Tac Toe!')
+        reply_text = "Welcome to Tic Tac Toe!"
+        #message = TextSendMessage(reply_text)
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
 
-    while True:
+        while True:
 
-        theBoard = [' '] * 10
-        playerLetter, computerLetter = inputPlayerLetter()
-        turn = whoGoesFirst()
-        #print('The ' + turn + ' will go first.')
-        reply_text = "The " + turn + " will go first.!"
-        message = TextSendMessage(reply_text)
-        line_bot_api.reply_message(event.reply_token, message)
-        gameIsPlaying = True
+            theBoard = [' '] * 10
+            playerLetter, computerLetter = inputPlayerLetter()
+            turn = whoGoesFirst()
+            #print('The ' + turn + ' will go first.')
+            reply_text = "The " + turn + " will go first.!"
+            message = TextSendMessage(reply_text)
+            line_bot_api.reply_message(event.reply_token, message)
+            gameIsPlaying = True
 
-        while gameIsPlaying:
-            if turn == 'player':
-                
-                drawBoard(theBoard)
-                move = getPlayerMove(theBoard)
-                makeMove(theBoard, playerLetter, move)
-
-                if isWinner(theBoard, playerLetter):
+            while gameIsPlaying:
+                if turn == 'player':
+                    
                     drawBoard(theBoard)
-                    #print('You have won the game!')
-                    reply_text = "You have won the game!"
-                    message = TextSendMessage(reply_text)
-                    line_bot_api.reply_message(event.reply_token, message)
-                    gameIsPlaying = False
-                else:
-                    if isBoardFull(theBoard):
+                    move = getPlayerMove(theBoard)
+                    makeMove(theBoard, playerLetter, move)
+
+                    if isWinner(theBoard, playerLetter):
                         drawBoard(theBoard)
-                        #print('The game is a tie!')
-                        reply_text = "The game is a tie!"
+                        #print('You have won the game!')
+                        reply_text = "You have won the game!"
                         message = TextSendMessage(reply_text)
                         line_bot_api.reply_message(event.reply_token, message)
-                        break
+                        gameIsPlaying = False
                     else:
-                        turn = 'computer'
+                        if isBoardFull(theBoard):
+                            drawBoard(theBoard)
+                            #print('The game is a tie!')
+                            reply_text = "The game is a tie!"
+                            message = TextSendMessage(reply_text)
+                            line_bot_api.reply_message(event.reply_token, message)
+                            break
+                        else:
+                            turn = 'computer'
 
-            else:
-                
-                move = getComputerMove(theBoard, computerLetter)
-                makeMove(theBoard, computerLetter, move)
-
-                if isWinner(theBoard, computerLetter):
-                    drawBoard(theBoard)
-                    #print('You have lose the game!')
-                    reply_text = "You have lose the game!"
-                    message = TextSendMessage(reply_text)
-                    line_bot_api.reply_message(event.reply_token, message)
-                    gameIsPlaying = False
                 else:
-                    if isBoardFull(theBoard):
+                    
+                    move = getComputerMove(theBoard, computerLetter)
+                    makeMove(theBoard, computerLetter, move)
+
+                    if isWinner(theBoard, computerLetter):
                         drawBoard(theBoard)
-                        #print('The game is a tie!')
-                        reply_text = "The game is a tie!"
+                        #print('You have lose the game!')
+                        reply_text = "You have lose the game!"
                         message = TextSendMessage(reply_text)
                         line_bot_api.reply_message(event.reply_token, message)
-                        break
+                        gameIsPlaying = False
                     else:
-                        turn = 'player'
+                        if isBoardFull(theBoard):
+                            drawBoard(theBoard)
+                            #print('The game is a tie!')
+                            reply_text = "The game is a tie!"
+                            message = TextSendMessage(reply_text)
+                            line_bot_api.reply_message(event.reply_token, message)
+                            break
+                        else:
+                            turn = 'player'
 
-       # print('Do you want to play again? (yes or no)')
-        reply_text = "Do you want to play again? (yes or no)!"
-        message = TextSendMessage(reply_text)
-        line_bot_api.reply_message(event.reply_token, message)
-        if not input().lower().startswith('y'):
-            break
+        # print('Do you want to play again? (yes or no)')
+            reply_text = "Do you want to play again? (yes or no)!"
+            message = TextSendMessage(reply_text)
+            line_bot_api.reply_message(event.reply_token, message)
+            if not input().lower().startswith('y'):
+                break
 
 
 
@@ -247,17 +247,7 @@ def handle_message(event):
     elif(text=="機器人"):
         reply_text = "有！我是game機器人"
     elif(text=="game"):
-        text = "Welcome to Tic Tac Toe!"
-        #line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
-        
-        while True:
-            #reply_text = "Welcome to Tic Tac Toe!"
-            reply_text = "".join([text, "while"])
-            theBoard = [' '] * 10
-            playerLetter, computerLetter = inputPlayerLetter()
-            turn = whoGoesFirst()
-            #print('The ' + turn + ' will go first.')
-            #reply_text = "".join([text, "。 跟你說，現在的 X=",Xstr,"你可以試著'解題'看看..."])
+        game()
 
     else:  # 如果非以上的選項，就會學你說話
         reply_text = text
