@@ -250,7 +250,7 @@ def handle_message(event):
         #ok   reply_text = "".join([text, "。 跟你說，現在的 X=."]) 
         #line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
 
-        while True:
+        while 1>0:
             reply_text = "game"
 
 
