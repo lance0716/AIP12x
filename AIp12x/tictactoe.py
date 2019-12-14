@@ -248,6 +248,7 @@ def handle_message(event):
         #game()
         #text = "Welcome to Tic Tac Toe!"
         print("Welcome to Tic Tac Toe!",text)
+        reply_text = "".join(["while",text])
         #line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
 
         while True:
