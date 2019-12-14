@@ -248,8 +248,10 @@ def handle_message(event):
         reply_text = "Welcome to Tic Tac Toe!"
         message = TextSendMessage(reply_text)
         line_bot_api.reply_message(event.reply_token, message)
-        run = True
-        while run == True:
+
+        while True:
+            @handler.add(MessageEvent, message=TextMessage)
+            def handle_message(event):
             reply_text = "while"
             message = TextSendMessage(reply_text)
             line_bot_api.reply_message(event.reply_token, message)
