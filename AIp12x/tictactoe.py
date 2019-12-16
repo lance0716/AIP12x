@@ -248,7 +248,9 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
 
         theBoard = [' '] * 10
-        reply_text = "Do you want to be O or X?"
+        #reply_text = "Do you want to be O or X?"
+        print("Do you want to be O or X?",text)
+        reply_text = "".join([text, ""]) 
         message = TextSendMessage(reply_text)
         line_bot_api.reply_message(event.reply_token, message)
         playerLetter, computerLetter = inputPlayerLetter()
