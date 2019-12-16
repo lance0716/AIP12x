@@ -247,7 +247,7 @@ def handle_message(event):
         reply_text = "".join([text, "。 跟你說，現在的 X=."]) 
         line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
 
-        theBoard = [' '] * 10
+        theBoard = [" "] * 10
         #reply_text = "Do you want to be O or X?"
         print("Do you want to be O or X?",text)
         reply_text = "".join([text, ""]) 
@@ -260,8 +260,8 @@ def handle_message(event):
 
     else:  # 如果非以上的選項，就會學你說話
         reply_text = text
-    message = TextSendMessage(reply_text)
-    line_bot_api.reply_message(event.reply_token, message)
+    #message = TextSendMessage(reply_text)
+    #line_bot_api.reply_message(event.reply_token, message)
 
 ###=== (5.6) 執行程式  ===###
 import os
