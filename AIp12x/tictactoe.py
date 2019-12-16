@@ -7,198 +7,7 @@ from linebot import ( LineBotApi, WebhookHandler )
 from linebot.exceptions import( InvalidSignatureError )
 from linebot.models import *
 import random
-
-
-def drawBoard(board):
-
-    print(board[7] + '|' + board[8] + '|' + board[9])
-    print('-+-+-')
-    print(board[4] + '|' + board[5] + '|' + board[6])
-    print('-+-+-')
-    print(board[1] + '|' + board[2] + '|' + board[3])
-
-def inputPlayerLetter():
-
-    letter = ''
-    while not (letter == 'O' or letter == 'X'):
-        #print('Do you want to be O or X?')
-        reply_text = "Do you want to be O or X?"
-        message = TextSendMessage(reply_text)
-        line_bot_api.reply_message(event.reply_token, message)
-        letter = input().upper()
-
-    if letter == 'X':
-        return ['X', 'O']
-    else:
-        return ['O', 'X']
-
-def whoGoesFirst():
-
-    print('Do you want to go first?')
-    gofirstornot = input().upper()
-    if gofirstornot != 'Y':
-        return 'computer'
-    else:
-        return 'player'
-
-def makeMove(board, letter, move):
-    board[move] = letter
-
-def isWinner(bo, le):
-
-    return ((bo[7] == le and bo[8] == le and bo[9] == le) or #  top
-    (bo[4] == le and bo[5] == le and bo[6] == le) or #  middle
-    (bo[1] == le and bo[2] == le and bo[3] == le) or #  bottom
-    (bo[7] == le and bo[4] == le and bo[1] == le) or # down the left side
-    (bo[8] == le and bo[5] == le and bo[2] == le) or # down the middle
-    (bo[9] == le and bo[6] == le and bo[3] == le) or # down the right side
-    (bo[7] == le and bo[5] == le and bo[3] == le) or # diagonal
-    (bo[9] == le and bo[5] == le and bo[1] == le)) # diagonal
-
-def getBoardCopy(board):
-
-    boardCopy = []
-    for i in board:
-        boardCopy.append(i)
-    return boardCopy
-
-def isSpaceFree(board, move):
-
-    return board[move] == ' '
-
-def getPlayerMove(board):
-
-    move = ' '
-    while move not in '1 2 3 4 5 6 7 8 9'.split() or not isSpaceFree(board, int(move)):
-        print('What is your next move? (1-9)')
-        move = input()
-    return int(move)
-
-def chooseRandomMoveFromList(board, movesList):
-
-    possibleMoves = []
-    for i in movesList:
-        if isSpaceFree(board, i):
-            possibleMoves.append(i)
-
-    if len(possibleMoves) != 0:
-        return random.choice(possibleMoves)
-    else:
-        return None
-
-def getComputerMove(board, computerLetter):
-
-    if computerLetter == 'X':
-        playerLetter = 'O'
-    else:
-        playerLetter = 'X'
-
-    # AI:
-    for i in range(1, 10):
-        boardCopy = getBoardCopy(board)
-        if isSpaceFree(boardCopy, i):
-            makeMove(boardCopy, computerLetter, i)
-            if isWinner(boardCopy, computerLetter):
-                return i
-
-
-    for i in range(1, 10):
-        boardCopy = getBoardCopy(board)
-        if isSpaceFree(boardCopy, i):
-            makeMove(boardCopy, playerLetter, i)
-            if isWinner(boardCopy, playerLetter):
-                return i
-
-    move = chooseRandomMoveFromList(board, [1, 3, 7, 9])
-    if move != None:
-        return move
-
-    if isSpaceFree(board, 5):
-        return 5
-
-    return chooseRandomMoveFromList(board, [2, 4, 6, 8])
-
-def isBoardFull(board):
-
-    for i in range(1, 10):
-        if isSpaceFree(board, i):
-            return False
-    return True
-
-def game():
-
-        
-        #print('Welcome to Tic Tac Toe!')
-        reply_text = "Welcome to Tic Tac Toe!"
-        #message = TextSendMessage(reply_text)
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
-
-        while True:
-
-            theBoard = [' '] * 10
-            playerLetter, computerLetter = inputPlayerLetter()
-            turn = whoGoesFirst()
-            #print('The ' + turn + ' will go first.')
-            reply_text = "The " + turn + " will go first.!"
-            message = TextSendMessage(reply_text)
-            line_bot_api.reply_message(event.reply_token, message)
-            gameIsPlaying = True
-
-            while gameIsPlaying:
-                if turn == 'player':
-                    
-                    drawBoard(theBoard)
-                    move = getPlayerMove(theBoard)
-                    makeMove(theBoard, playerLetter, move)
-
-                    if isWinner(theBoard, playerLetter):
-                        drawBoard(theBoard)
-                        #print('You have won the game!')
-                        reply_text = "You have won the game!"
-                        message = TextSendMessage(reply_text)
-                        line_bot_api.reply_message(event.reply_token, message)
-                        gameIsPlaying = False
-                    else:
-                        if isBoardFull(theBoard):
-                            drawBoard(theBoard)
-                            #print('The game is a tie!')
-                            reply_text = "The game is a tie!"
-                            message = TextSendMessage(reply_text)
-                            line_bot_api.reply_message(event.reply_token, message)
-                            break
-                        else:
-                            turn = 'computer'
-
-                else:
-                    
-                    move = getComputerMove(theBoard, computerLetter)
-                    makeMove(theBoard, computerLetter, move)
-
-                    if isWinner(theBoard, computerLetter):
-                        drawBoard(theBoard)
-                        #print('You have lose the game!')
-                        reply_text = "You have lose the game!"
-                        message = TextSendMessage(reply_text)
-                        line_bot_api.reply_message(event.reply_token, message)
-                        gameIsPlaying = False
-                    else:
-                        if isBoardFull(theBoard):
-                            drawBoard(theBoard)
-                            #print('The game is a tie!')
-                            reply_text = "The game is a tie!"
-                            message = TextSendMessage(reply_text)
-                            line_bot_api.reply_message(event.reply_token, message)
-                            break
-                        else:
-                            turn = 'player'
-
-        # print('Do you want to play again? (yes or no)')
-            reply_text = "Do you want to play again? (yes or no)!"
-            message = TextSendMessage(reply_text)
-            line_bot_api.reply_message(event.reply_token, message)
-            if not input().lower().startswith('y'):
-                break
-
+from random import randint
 
 
 
@@ -245,26 +54,70 @@ def handle_message(event):
     elif(text=="機器人"):
         reply_text = "有！我是game機器人"
     elif(text=="game"):
-        #game()
-        print("Welcome to Tic Tac Toe!",text)
-        #ok   reply_text = "".join([text, "。 跟你說，現在的 X=."]) 
-        #line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+        board = []
+        for x in range(3):
+            board.append(["[ ]"] * 3)
+        def print_board(board):
+            for row in board:
+                reply_text = " ".join(row)
+                message = TextSendMessage(reply_text)
+                line_bot_api.reply_message(event.reply_token, message)
+        reply_text = "Let's play Tic Tac Toe!"
+        message = TextSendMessage(reply_text)
+        line_bot_api.reply_message(event.reply_token, message)
+        print_board(board)
 
-        theBoard = [' '] * 10
-        playerLetter, computerLetter = inputPlayerLetter()
-        turn = whoGoesFirst()
-        #print('The ' + turn + ' will go first.')
-        reply_text = "".join([text, "The ",  trun , "will go first."])
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
-
-
-    else:  # 如果非以上的選項，就會學你說話
-        reply_text = text
-    message = TextSendMessage(reply_text)
-    line_bot_api.reply_message(event.reply_token, message)
+        for turn in range(10):
+            turn = turn + 1
+            guess_row = int(raw_input("Row:"))
+            guess_col = int(raw_input("Col:"))
+        
+            if (guess_row < 0 or guess_row > 2) or (guess_col < 0 or guess_col > 2):
+                reply_text = "Oops, that's not even on the board."
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+            elif (board[guess_row][guess_col] == "[O]") or (board[guess_row][guess_col] == "[X]"):
+                reply_text = "Spot not available."
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+            else:
+                board[guess_row][guess_col] = "[X]"
+                print_board(board)
+                xwins = (board[0][0] == "[X]" and board[0][1] == "[X]" and board[0][2] == "[X]") or (board[1][0] == "[X]" and board[1][1] == "[X]" and board[1][2] == "[X]") or (board[2][0] == "[X]" and board[2][1] == "[X]" and board[2][2] == "[X]") or (board[0][0] == "[X]" and board[1][0] == "[X]" and board[2][0] == "[X]") or (board[0][0] == "[X]" and board[1][0] == "[X]" and board[2][0] == "[X]") or (board[1][0] == "[X]" and board[1][1] == "[X]" and board[1][2] == "[X]") or (board[2][0] == "[X]" and board[2][1] == "[X]" and board[2][2] == "[X]") or (board[0][0] == "[X]" and board[1][1] == "[X]" and board[2][2] == "[X]") or (board[2][0] == "[X]" and board[1][1] == "[X]" and board[0][2] == "[X]") or (board[0][2] == "[X]" and board[1][1] == "[X]" and board[2][0] == "[X]")
+                owins = (board[0][0] == "[O]" and board[0][1] == "[O]" and board[0][2] == "[O]") or (board[1][0] == "[O]" and board[1][1] == "[O]" and board[1][2] == "[O]") or (board[2][0] == "[O]" and board[2][1] == "[O]" and board[2][2] == "[O]") or (board[0][0] == "[O]" and board[1][0] == "[O]" and board[2][0] == "[O]") or (board[0][0] == "[O]" and board[1][0] == "[O]" and board[2][0] == "[O]") or (board[1][0] == "[O]" and board[1][1] == "[O]" and board[1][2] == "[O]") or (board[2][0] == "[O]" and board[2][1] == "[O]" and board[2][2] == "[O]") or (board[0][0] == "[O]" and board[1][1] == "[O]" and board[2][2] == "[O]") or (board[2][0] == "[O]" and board[1][1] == "[O]" and board[0][2] == "[O]") or (board[0][2] == "[O]" and board[1][1] == "[O]" and board[2][0] == "[O]")
+                
+                if xwins is True:
+                    reply_text =  "You win!"
+                    line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+                    break
+                elif owins is True:
+                    reply_text = "You lose!"
+                    line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+                    break
+                else:
+                    reply_text = "My turn!"
+                    line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+                    
+                    def random_row(board):
+                        return randint(0, len(board) - 1)
+                    def random_col(board):
+                        return randint(0, len(board[0]) - 1)
+                    comp_row = random_row(board)
+                    comp_col = random_col(board)
+                    while board[comp_row][comp_col] == "[O]" or board[comp_row][comp_col] == "[X]":
+                        def random_row(board):
+                            return randint(0, len(board) - 1)
+                        def random_col(board):
+                            return randint(0, len(board[0]) - 1)
+                        
+                        comp_row = random_row(board)
+                        comp_col = random_col(board)
+                    
+                    else:
+                        board[comp_row][comp_col] = "[O]"
+                        print_board(board)
 
 ###=== (5.6) 執行程式  ===###
 import os
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
+    #main()
