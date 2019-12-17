@@ -247,15 +247,16 @@ def handle_message(event):
         #game()
         print("Welcome to Tic Tac Toe!",text)
         reply_text = "".join([text, "。 跟你說，現在的 X=."])
-        #line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))     
-        
-            
+        #line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))  
+        True ==1   
+        while True:
+            reply_text = "The " + turn + " will go first.!"
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(playerLetter))
             
     else:
-        print("Welcome to Tic Tac Toe!",text)
-        reply_text = "".join([text, "。 跟你說，現在的 X=."]) 
+        print("else",text)
+        reply_text = "".join([text, "。 dddd"]) 
         
-        app.run(host='0.0.0.0', port=port)
 
 
 
