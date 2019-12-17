@@ -8,7 +8,6 @@ from linebot.exceptions import( InvalidSignatureError )
 from linebot.models import *
 import random
 
-
 def drawBoard(board):
 
     print(board[7] + '|' + board[8] + '|' + board[9])
@@ -128,7 +127,7 @@ def game():
         #print('Welcome to Tic Tac Toe!')
         reply_text = "Welcome to Tic Tac Toe!"
         #message = TextSendMessage(reply_text)
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))        
 
         while True:
 
@@ -247,23 +246,16 @@ def handle_message(event):
 
         #game()
         print("Welcome to Tic Tac Toe!",text)
-        reply_text = "".join([text, "。 跟你說，現在的 X=."]) 
+        reply_text = "".join([text, "。 跟你說，現在的 X=."])
         #line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))     
         
-
-        while True:
-            #theBoard = [" "] * 10
-            #reply_text = "Do you want to be O or X?"
-            print("Do you want to be O or X?",text)
-            reply_text = "".join([text, ""])
-            #message = TextSendMessage(reply_text)
-            #line_bot_api.reply_message(event.reply_token, message)
-            #playerLetter, computerLetter = inputPlayerLetter()
+            
             
     else:
         print("Welcome to Tic Tac Toe!",text)
         reply_text = "".join([text, "。 跟你說，現在的 X=."]) 
-
+        
+        app.run(host='0.0.0.0', port=port)
 
 
 
