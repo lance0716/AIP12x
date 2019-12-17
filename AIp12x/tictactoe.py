@@ -248,35 +248,28 @@ def handle_message(event):
         #game()
         print("Welcome to Tic Tac Toe!",text)
         reply_text = "".join([text, "。 跟你說，現在的 X=."]) 
-        #line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+        #line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))     
+        
 
         while True:
-        #theBoard = [" "] * 10
-        #reply_text = "Do you want to be O or X?"
-        print("Do you want to be O or X?",text)
-        reply_text = "".join([text, ""]) 
-        #message = TextSendMessage(reply_text)
-        #line_bot_api.reply_message(event.reply_token, message)
-        #playerLetter, computerLetter = inputPlayerLetter()
+            #theBoard = [" "] * 10
+            #reply_text = "Do you want to be O or X?"
+            print("Do you want to be O or X?",text)
+            reply_text = "".join([text, ""])
+            #message = TextSendMessage(reply_text)
+            #line_bot_api.reply_message(event.reply_token, message)
+            #playerLetter, computerLetter = inputPlayerLetter()
+            
     else:
         print("Welcome to Tic Tac Toe!",text)
         reply_text = "".join([text, "。 跟你說，現在的 X=."]) 
 
-        try:
-            print("Do you want to be O or X?",text)
-            reply_text = "".join([text, ""]) 
-         except ValueError:
-            reply_text = "".join([text, "。 跟你說，現在 you first and to be O ,"你可以試著看看..."])
+
 
 
     line_bot_api.reply_message(event.reply_token, TextSendMessage(playerLetter))
 
 
-
-    else:  # 如果非以上的選項，就會學你說話
-        reply_text = text
-    #message = TextSendMessage(reply_text)
-    #line_bot_api.reply_message(event.reply_token, message)
 
 ###=== (5.6) 執行程式  ===###
 import os
