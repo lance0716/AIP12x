@@ -230,31 +230,46 @@ def callback():
 ###=== (5.5) 處理訊息  ===###
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    global XO
+    global first
     print(event)
     if event.message.id == "100001":
         return
     text = event.message.text
+    print(">>>>>>>>>> TEXT = "+text)
     if (text=="Hi"):
         reply_text = "Hello"
-        #Your user ID
     elif(text=="你好"): 
         reply_text = "你好啊..."
     elif(text=="機器人"):
         reply_text = "有！我是game機器人"
     elif(text=="game"):
+
         #game()
         print("Welcome to Tic Tac Toe!",text)
         reply_text = "".join([text, "。 跟你說，現在的 X=."]) 
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+        #line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
 
+        while True:
         #theBoard = [" "] * 10
         #reply_text = "Do you want to be O or X?"
         print("Do you want to be O or X?",text)
         reply_text = "".join([text, ""]) 
-        message = TextSendMessage(reply_text)
-        line_bot_api.reply_message(event.reply_token, message)
-        playerLetter, computerLetter = inputPlayerLetter()
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(playerLetter))
+        #message = TextSendMessage(reply_text)
+        #line_bot_api.reply_message(event.reply_token, message)
+        #playerLetter, computerLetter = inputPlayerLetter()
+    else:
+        print("Welcome to Tic Tac Toe!",text)
+        reply_text = "".join([text, "。 跟你說，現在的 X=."]) 
+
+        try:
+            print("Do you want to be O or X?",text)
+            reply_text = "".join([text, ""]) 
+         except ValueError:
+            reply_text = "".join([text, "。 跟你說，現在 you first and to be O ,"你可以試著看看..."])
+
+
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(playerLetter))
 
 
 
