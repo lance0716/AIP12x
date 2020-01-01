@@ -1,17 +1,23 @@
+# $ heroku login              // 登入 Heroku
+# $ git init                  // 初始化專案
+# $ heroku git:remote -a 專案名稱  // 專案名稱 = aip12x
 
+# $ git add .                // 更新專案 
+# $ git commit -m “更新的訊息”
+# $ git push heroku master
+
+# 偵錯(如下行指令)
+# $ heroku logs --tail
 
 import os
 import configparser
 from flask import Flask, request, abort
-
-from linebot import (
-    LineBotApi, WebhookHandler
-)
-from linebot.exceptions import (
-    InvalidSignatureError
-)
+from linebot import ( LineBotApi, WebhookHandler )
+from linebot.exceptions import( InvalidSignatureError )
 from linebot.models import *
-
+import re
+import requests
+from bs4 import BeautifulSoup
 
 
 app = Flask(__name__)
@@ -37,50 +43,55 @@ def callback():
         abort(400)
     return 'OK'
 
-
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     if event.message.text == 'Hi':
         reply_text = "Hello"
         line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
+        print("Hello")
 
-    if event.message.text == '你好': 
+    elif event.message.text == '你好': 
         reply_text = "你好啊..."
         line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
 
-    if event.message.text == '機器人':
+    elif re.search(r"(機器人|bot)", event.message.text):
         reply_text = "有！我是Job機器人"
         line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
 
-    if event.message.text == '追蹤中職缺':
+    elif re.search(r"((正在追蹤|追蹤中|追蹤)的(職缺|缺額))", event.message.text):
         line_bot_api.reply_message(event.reply_token, follow())
     
-    if event.message.text == '線上真人諮詢':
+    elif event.message.text == '線上真人諮詢':
         line_bot_api.reply_message(event.reply_token, onlineHumanContact())
 
-    if event.message.text == '我的履歷':
+    elif event.message.text == '我的履歷':
         line_bot_api.reply_message(event.reply_token, myResume())
 
-    if event.message.text == '瀏覽履歷庫':
+    elif event.message.text == '瀏覽履歷庫':
         line_bot_api.reply_message(event.reply_token, viewMyResume())
-    if event.message.text.upper() == 'LOGO':
+    elif event.message.text.upper() == 'LOGO':
         url = "https://docsplayer.com/docs-images/50/26156972/images/1-0.png"
         #line_bot_api.push_message(to, ImageSendMessage(original_content_url=image_url, preview_image_url=image_url))
         #line_bot_api.push_message(to, ImageSendMessage(original_content_url=image_url, preview_image_url=image_url))
         image_message = ImageSendMessage(original_content_url=url, preview_image_url=url)    
         line_bot_api.reply_message(event.reply_token, image_message)
 
-    if event.message.text.upper() == 'MOVIE':
-        url = "https://i.imgur.com/g2aQYSZ.mp4"
+    elif re.search(r"(MOVIE|影片|求職技巧)", event.message.text):
+        url = "https://i.imgur.com/cZcuWu2.mp4"
         line_bot_api.reply_message(event.reply_token,VideoSendMessage(original_content_url=url, preview_image_url=url))
 
-    if event.message.text.upper() == 'MUSIC':
+    elif re.search(r"(MUSIC|音樂|(我想聽|聽)音樂)", event.message.text):
         url = "https://sampleswap.org/mp3/artist/5101/Peppy--The-Firing-Squad_YMXB-160.mp3"
         line_bot_api.reply_message(event.reply_token,AudioSendMessage(original_content_url=url, duration=100000))
+    
+    elif re.search(r"(夢想|不想工作)", event.message.text):
+        reply_text = dream()
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
+        print(reply_text)
 
     else:
-        reply_text = "可以輸入...\n1.追蹤中職缺\n2.線上真人諮詢\n3.我的履歷\n4.瀏覽履歷庫\n5.logo\n6.movie\n7.music"
+        reply_text = "可以輸入...\n1.追蹤...職缺\n2.線上真人諮詢\n3.我的履歷\n4.瀏覽履歷庫\n5.logo\n6.movie\影片\n7.music\音樂"
         line_bot_api.reply_message(event.reply_token, TextSendMessage(reply_text))
     
 
@@ -90,13 +101,12 @@ def follow():
         template=CarouselTemplate(
             columns=[
                 CarouselColumn(
-                    title='誠徵java工程師1名',
-                    text='地點：捷運市政府站附近\n（追蹤中）',
+                    title='Backend Engineer 後端工程師',
+                    text='地點：台北市中正區\n（追蹤中）',
                     actions=[
-                        PostbackAction(
+                        URIAction(
                             label='直接應徵',
-                            display_text='履歷投遞...',
-                            data='action=buy&itemid=1'
+                            uri ='https://www.1111.com.tw/job/85971957/?ks=%E5%B7%A5%E7%A8%8B%E5%B8%AB'
                         ),
                         MessageAction(
                             label='線上真人諮詢',
@@ -110,13 +120,12 @@ def follow():
                     ]
                 ),
                 CarouselColumn(
-                    title='誠徵 資深半導體工程師',
-                    text='地點：桃園觀音\n（追蹤中）',
+                    title='誠徵 軟體工程師 Software Engineer',
+                    text='地點：新北市汐止區\n（追蹤中）',
                     actions=[
-                        PostbackAction(
+                        URIAction(
                             label='直接應徵',
-                            display_text='履歷投遞...',
-                            data='action=buy&itemid=1'
+                            uri ='https://www.1111.com.tw/job/91244617/?ks=%E5%B7%A5%E7%A8%8B%E5%B8%AB'
                         ),
                         MessageAction(
                             label='線上真人諮詢',
@@ -130,13 +139,12 @@ def follow():
                     ]
                 ),
                 CarouselColumn(
-                    title='誠徵 資深半自動工程師',
-                    text='地點：信義101\n（FA聯繫中）',
+                    title='誠徵 PE Engineer 製程工程師',
+                    text='地點：新北市新店區\n（FA聯繫中）',
                     actions=[
-                        PostbackAction(
+                        URIAction(
                             label='直接應徵',
-                            display_text='履歷投遞...',
-                            data='action=buy&itemid=1'
+                            uri ='https://www.1111.com.tw/job/85859810/?ks=%E5%B7%A5%E7%A8%8B%E5%B8%AB'
                         ),
                         MessageAction(
                             label='線上真人諮詢',
@@ -150,13 +158,12 @@ def follow():
                     ]
                 ),
                 CarouselColumn(
-                    title='誠徵 資深java軟體工程師',
-                    text='地點：松山區',
+                    title='誠徵 系統工程師 System Engineer',
+                    text='地點：台北市松山區',
                     actions=[
-                        PostbackAction(
+                        URIAction(
                             label='直接應徵',
-                            display_text='履歷投遞...',
-                            data='action=buy&itemid=1'
+                            uri ='https://www.1111.com.tw/job/86025594/?ks=%E5%B7%A5%E7%A8%8B%E5%B8%AB'
                         ),
                         MessageAction(
                             label='線上真人諮詢',
@@ -170,13 +177,12 @@ def follow():
                     ]
                 ),
                 CarouselColumn(
-                    title='誠徵 網路管理員',
-                    text='地點：新北市',
+                    title='誠徵 硬體工程師(Hardware Mixed Signal Engineer)',
+                    text='地點：台北市南港區',
                     actions=[
-                        PostbackAction(
+                        URIAction(
                             label='直接應徵',
-                            display_text='履歷投遞...',
-                            data='action=buy&itemid=1'
+                             uri ='https://www.1111.com.tw/job/85013437/?ks=%E5%B7%A5%E7%A8%8B%E5%B8%AB'
                         ),
                         MessageAction(
                             label='線上真人諮詢',
@@ -259,6 +265,31 @@ def viewMyResume():
         )
     )
     return message
+
+
+def dream():
+    url = 'https://www.taiwanlottery.com.tw/index_new.aspx'
+    html = requests.get(url)
+    sp = BeautifulSoup(html.text, 'html.parser')
+    data1 = sp.select("#rightdown")
+    data2 = data1[0].find('div', {'class':'contents_box04'})
+    data3 = data2.find_all('div', {'class':'ball_tx'})
+    dataTitle = data2.find_all('div', {'class':'contents_mine_tx02'})
+
+    title_text=""
+    num_text=""
+
+    # 標題.
+    for n in range(len(dataTitle)):
+        title_text = title_text + " " + dataTitle[n].text
+    # 三星彩號碼.
+    for n in range(len(data3)):
+        num_text = num_text + "  " + data3[n].text
+
+    sum_text= title_text + "\n" + "三星彩中獎號碼：" + num_text
+    #sum_text= "三星彩中獎號碼：" + num_text
+    return sum_text
+
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
